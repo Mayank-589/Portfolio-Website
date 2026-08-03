@@ -89,6 +89,33 @@
   }, {threshold:0.15});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
  
+  // ---- projects carousel: arrow buttons scroll one card at a time ----
+  const projGrid = document.getElementById('projectsGrid');
+  const projPrev = document.getElementById('projPrev');
+  const projNext = document.getElementById('projNext');
+ 
+  if (projGrid && projPrev && projNext){
+    function cardStep(){
+      const card = projGrid.querySelector('.project-card');
+      if (!card) return 300;
+      const style = getComputedStyle(projGrid);
+      const gap = parseFloat(style.columnGap || style.gap || 24);
+      return card.getBoundingClientRect().width + gap;
+    }
+    function updateArrows(){
+      const maxScroll = projGrid.scrollWidth - projGrid.clientWidth - 2;
+      projPrev.disabled = projGrid.scrollLeft <= 2;
+      projNext.disabled = projGrid.scrollLeft >= maxScroll;
+    }
+    projPrev.addEventListener('click', ()=> projGrid.scrollBy({left:-cardStep(), behavior:'smooth'}));
+    projNext.addEventListener('click', ()=> projGrid.scrollBy({left:cardStep(), behavior:'smooth'}));
+    projGrid.addEventListener('scroll', ()=>{
+      if(!ticking) requestAnimationFrame(updateArrows);
+    }, {passive:true});
+    window.addEventListener('resize', updateArrows);
+    updateArrows();
+  }
+ 
   // ---- loading screen: shows briefly, fades out once page is ready ----
   window.addEventListener('load', ()=>{
     setTimeout(()=>{
