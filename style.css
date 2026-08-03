@@ -245,7 +245,10 @@
   }
   @media(max-width:900px){
     .project-card{flex:0 0 100%;}
-    .proj-arrow{display:none;}
+    .projects-wrap{padding-bottom:64px;}
+    .proj-arrow{top:auto;bottom:0;transform:none;left:auto;right:auto;}
+    .proj-arrow.prev{left:calc(50% - 54px);}
+    .proj-arrow.next{left:calc(50% + 10px);}
   }
  
   /* ---------- TIMELINE ---------- */
